@@ -10,3 +10,7 @@ How to use:
 
  - ./manage.py syncdb
  - ./manage.py runserver
+
+Thanks to:
+
+ - Dan Wong, who made it prettier.
