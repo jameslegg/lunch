@@ -1,0 +1,12 @@
+The Conversocial lunch-ordering system, hacked up one afternoon
+after a particularly good lunch.
+
+To do:
+
+ - auto-selection of lunch places
+ - better error/conflict handling
+
+How to use:
+
+ - ./manage.py syncdb
+ - ./manage.py runserver
