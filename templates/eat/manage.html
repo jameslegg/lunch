@@ -1,0 +1,63 @@
+{% extends "eat/base.html" %}
+
+{% block content %}
+{% if meal.is_open %}
+<h2>Status</h2>
+<h3>Still collecting orders until {{ meal.closing_at }}.</h3>
+{% else %}
+<h2>Start collecting orders for a new meal</h2>
+
+<form method="post" action="new_meal">
+    <label for="where">Going to:</label>
+	    <select name="where" onChange="if (this.value=='new') document.getElementById('new_where').style.display='block'">
+	        {% for place in places %}
+	        <option value="{{ place.id }}">{{ place.name }}</option>
+	        {% endfor %}
+	        <option value="new">Somewhere new</option>
+	    </select>
+    
+    <div id="new_where" {% if places|length > 0 %} style="display: none" {% endif %} class="clear">
+        <label for="new_where_name">Name</label>
+        <input name="new_where_name"/>
+        <br class="clear" />
+        
+        <label for="new_where_url">Website</label>
+        <input name="new_where_url" />
+        <br class="clear" />
+        
+        <label for="new_where_logo">Logo URL</label>
+        <input name="new_where_logo" />
+        <br class="clear" />
+        
+    </div>
+    
+    <br class="clear"/>
+    
+    <label for="closing_time">Last orders at:</label> 
+	    <select name="closing_time">
+	        <option value="12:00">midday</option>
+	        <option value="12:05">12:05</option>
+	        <option value="12:15">12:15</option>
+	        <option value="12:20">12:20</option>
+	        <option value="12:30">12:30</option>
+	        <option value="13:00">1pm</option>
+	        <option value="18:00">6pm</option>
+	    </select>
+	
+	<br class="clear" />
+	
+    <input type="submit" value="Unleash to the masses!" class="button" />
+    
+    <br class="clear" />
+    
+    {% csrf_token %}
+    
+</form>
+{% endif %}
+
+{% if meal %}
+
+{% include "eat/display_menu.html" with meal=meal only %}
+
+{% endif %}
+{% endblock %}

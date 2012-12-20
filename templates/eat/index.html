@@ -1,0 +1,43 @@
+{% extends "eat/base.html" %}
+
+{% block content %}
+{% if meal %}
+
+{% include "eat/display_menu.html" with meal=meal allow_delete="1" only %}
+
+<h2>Place your orders!</h2>
+
+<h3>Order deadline: {{ meal.closing_at }}</h3>
+
+<form method="post" action="add">
+{% csrf_token %}<br class="clear"/>
+	
+	<label for="choice_name">I am</label>
+	<input name="choice_name" value="{{ who }}" />
+	
+	<br class="clear"/>
+	
+	<label for="choice_option">I would like</label>
+	<select name="choice_option" onChange="if (this.value=='new') document.getElementById('choice_option_new').style.display='block'">
+	    {% for option in meal.place.options %}
+	    <option value="{{ option.id }}" {% if option.id == preferred_for_place %}selected='selected'{% endif %}>{{ option.name }}</option>
+	    {% endfor %}
+	    <option value="new">Something else (enter in box)</option>
+	</select>
+	<input name="choice_option_new" {% if meal.place.option_set.all|length > 0 %} style="display: none" {% endif %} id="choice_option_new" />
+	
+	<br class="clear"/>
+	       	
+	<label for="choice_customisation">Special request <span>optional</span></label>
+	<input name="choice_customisation" />
+	
+	<br class="clear"/>
+
+	<input type="submit" value="BRING ME MY FOOD!" class="button" />
+	
+</form>
+
+{% else %}
+No meal plans at the moment, please check back later or ask on IM.
+{% endif %}
+{% endblock %}

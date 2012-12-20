@@ -1,0 +1,42 @@
+<h2>Today we're going to</h2>
+
+<div id="going-to">
+        {% if meal.place.logo %}
+        <img src="{{ meal.place.logo }}" class="going-to-logo" />
+        {% else %}
+            {{ meal.place.name }}
+        {% endif %}
+        
+        <br />
+        
+        {% if meal.place.url %}
+            <a href="{{ meal.place.url }}" target="_blank" class="going-to-url">
+                MENU HERE
+            </a>
+        {% endif %}
+    </p>
+</div>
+
+<h2>Orders thus far</h2>
+
+<ul>
+{% for choice_name, choices in meal.grouped_choices %}
+<li>{{ choices.count }} x <strong>{{ choice_name }}</strong>
+    <ul>
+        {% for choice in choices.choices %}
+        <li>{% if choice.deleted %}<strike>{% endif %}
+            {{ choice.who }}
+            {% if choice.customisation %}
+            - {{ choice.customisation }}
+            {% endif %}
+            {% if choice.deleted %}</strike>{% else %}
+            {% if allow_delete %}
+                [<a href="delete?choice_id={{ choice.id }}">remove</a>]
+            {% endif %}
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+{% endfor %}
+</ul>
