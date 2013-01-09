@@ -8,7 +8,7 @@ class Place(models.Model):
     logo = models.CharField(max_length=255, null=True)
 
     def options(self):
-        return self.option_set.all().order_by("name")
+        return sorted(self.option_set.all(), key=lambda r: r.name.lower())
 
 class Meal(models.Model):
     closing_at = models.DateTimeField(null=False)
