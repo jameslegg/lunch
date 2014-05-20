@@ -63,12 +63,19 @@ def add_choice(request):
         raise "Sorry, too late" # FIXME
 
     if request.POST["choice_option"] == "new":
-        o = models.Option(place=m.place, name=request.POST["choice_option_new"])
+        name = request.POST["choice_option_new"].strip()
+        if not name:
+            # Some people get confused by the form layout
+            name = request.POST["choice_customisation"].strip()
+        o = models.Option(place=m.place, name=name, hidden=False)
 	try:
             o.save()
 	except IntegrityError:
             # Concurrently saved by someone else?
-            o = models.Option.objects.get(name=request.POST["choice_option_new"], place=m.place)
+            o = models.Option.objects.get(name=name, place=m.place)
+            if o.hidden:
+               o.hidden = False
+               o.save()
             if o is None:
                 raise
     else:

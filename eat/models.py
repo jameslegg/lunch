@@ -8,7 +8,7 @@ class Place(models.Model):
     logo = models.CharField(max_length=255, null=True)
 
     def options(self):
-        return sorted(self.option_set.all(), key=lambda r: r.name.lower())
+        return sorted(self.option_set.filter(hidden=False), key=lambda r: r.name.lower())
 
 class Meal(models.Model):
     closing_at = models.DateTimeField(null=False)
@@ -45,6 +45,7 @@ class Meal(models.Model):
 class Option(models.Model):
     place = models.ForeignKey(Place, null=False)
     name = models.CharField(max_length=255, null=False)
+    hidden = models.BooleanField()
     class Meta:
         unique_together = ("place", "name")
 
