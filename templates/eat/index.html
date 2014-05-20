@@ -20,11 +20,13 @@
 	<label for="choice_option">I would like</label>
 	<select name="choice_option" onChange="if (this.value=='new') document.getElementById('choice_option_new').style.display='block'">
 	    {% for option in meal.place.options %}
-	    <option value="{{ option.id }}" {% if option.id == preferred_for_place %}selected='selected'{% endif %}>{{ option.name }}</option>
+                {% if option.name != '' %}
+	        <option value="{{ option.id }}" {% if option.id == preferred_for_place %}selected='selected'{% endif %}>{{ option.name }}</option>
+                {% endif %}
 	    {% endfor %}
 	    <option value="new">Something else (enter in box)</option>
 	</select>
-	<input name="choice_option_new" {% if meal.place.option_set.all|length > 0 %} style="display: none" {% endif %} id="choice_option_new" />
+	<input name="choice_option_new" {% if meal.place.options|length > 0 %} style="display: none" {% endif %} id="choice_option_new" />
 	
 	<br class="clear"/>
 	       	
